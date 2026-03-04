@@ -3,7 +3,7 @@ import json
 import time
 import requests
 from flask import Flask, request
-from google import genai
+#from google import genai
 
 # ================== CONFIG ==================
 PAGE_ACCESS_TOKEN = "EAATZBufLpmNMBQ3su57hX6kbd5n6DPa1tMSHT9G32aerZC6JhxFAnHkMy7D2D130jTaXFJBcZBSkDN8YjVenbwrEgUFH8RZAuasP4JJEi3Bsvv9AfV8Lu6prPJRJ1ij8KAduuxXTGrKDwU8sxZAZAE2ZBilic2ruRgXHHdmVH5a9j0PHQ3JtEgtNseSC1Tb9AZBVF92tmKOulYz4Bmr2uZCgMIbmspFTz6oLISzcODn8zdFYZD"
@@ -15,7 +15,7 @@ DATA_FILE = "users.json"
 
 # ================== INIT ==================
 app = Flask(__name__)
-client = genai.Client(api_key=GEMINI_API_KEY)
+#client = genai.Client(api_key=GEMINI_API_KEY)
 @app.route("/", methods=["GET"])
 def home():
     return "Bot is running ✅", 200
