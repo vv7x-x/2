@@ -55,27 +55,7 @@ def send_message(recipient_id, text):
 
 # ================== AI CLASSIFICATION ==================
 def analyze_message_ai(text):
-   # prompt = #f"""
-صنف الرسالة التالية إلى واحدة فقط من:
-normal
-ask_number
-repeat_request
-serious_insult
-light_insult
-
-أرجع كلمة واحدة فقط بدون شرح.
-
-الرسالة:
-{text}
-#"""
- #   try:
-  #      response = client.models.generate_content(
-        #    model="gemini-2.0-flash",
-    #        contents=prompt
-    #    )
-    #    return response.text.strip().lower()
-   # except:
-        return "normal"
+    return "normal"
 
 # ================== VERIFY WEBHOOK ==================
 @app.route("/webhook", methods=["GET"])
