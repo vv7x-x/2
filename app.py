@@ -17,10 +17,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "OK", 200
+    return "Instagram Bot Running ✅", 200
 
 
-# ================== SAFE FILE HANDLING ==================
+# ================== FILE HANDLING ==================
 def load_users():
     try:
         if not os.path.exists(DATA_FILE):
@@ -42,7 +42,7 @@ def save_users(data):
 def send_typing(recipient_id):
     try:
         requests.post(
-            "https://graph.facebook.com/v25.0/me/messages",
+            "https://graph.facebook.com/v18.0/me/messages",
             params={"access_token": PAGE_ACCESS_TOKEN},
             json={
                 "recipient": {"id": recipient_id},
@@ -53,10 +53,11 @@ def send_typing(recipient_id):
     except Exception as e:
         print("Typing Error:", e)
 
+
 def send_message(recipient_id, text):
     try:
         response = requests.post(
-            "https://graph.facebook.com/v25.0/me/messages",
+            "https://graph.facebook.com/v18.0/me/messages",
             params={"access_token": PAGE_ACCESS_TOKEN},
             json={
                 "recipient": {"id": recipient_id},
@@ -70,6 +71,17 @@ def send_message(recipient_id, text):
 
 # ================== AI CLASSIFICATION ==================
 def analyze_message_ai(text):
+    text = text.lower()
+
+    if "رقمك" in text or "واتساب" in text:
+        return "ask_number"
+
+    if "تاني" in text or "مرة" in text:
+        return "repeat_request"
+
+    if "حمار" in text or "غبي" in text:
+        return "light_insult"
+
     return "normal"
 
 
@@ -95,42 +107,42 @@ def webhook():
 
         users = load_users()
 
-        # ✅ إصلاح مشكلة object
-        if data.get("object") not in ["instagram", "page"]:
+        if data.get("object") != "instagram":
             return "ignored", 200
 
         for entry in data.get("entry", []):
-            for change in entry.get("changes", []):
-                value = change.get("value", {})
+            for messaging in entry.get("messaging", []):
 
-                if "messages" in value:
-                    for message in value["messages"]:
-                        sender_id = message["from"]["id"]
-                        message_text = message.get("text", {}).get("body", "")
+                if "message" not in messaging:
+                    continue
 
-                        if not message_text:
-                            continue
+                sender_id = messaging["sender"]["id"]
+                message_text = messaging["message"].get("text")
 
-                        if sender_id not in users:
-                            users[sender_id] = {"count": 0}
+                if not message_text:
+                    continue
 
-                        classification = analyze_message_ai(message_text)
+                if sender_id not in users:
+                    users[sender_id] = {"count": 0}
 
-                        if classification == "ask_number":
-                            users[sender_id]["count"] += 1
-                            reply = f"ده رقمي 👇\n{PHONE_NUMBER}"
-                        elif classification == "repeat_request":
-                            reply = f"كنت باعتلك الرقم 😅\n{PHONE_NUMBER}"
-                        elif classification == "serious_insult":
-                            reply = "احترم نفسك لو سمحت."
-                        elif classification == "light_insult":
-                            reply = "ليه كده بس 😅"
-                        else:
-                            reply = "أنا ماسح الانستا 😅\nكلمني واتساب أحسن."
+                classification = analyze_message_ai(message_text)
 
-                        send_typing(sender_id)
-                        send_message(sender_id, reply)
-                        save_users(users)
+                if classification == "ask_number":
+                    users[sender_id]["count"] += 1
+                    reply = f"ده رقمي 👇\n{PHONE_NUMBER}"
+
+                elif classification == "repeat_request":
+                    reply = f"كنت باعتلك الرقم 😅\n{PHONE_NUMBER}"
+
+                elif classification == "light_insult":
+                    reply = "ليه كده بس 😅"
+
+                else:
+                    reply = "أنا ماسح الانستا 😅\nكلمني واتساب أحسن."
+
+                send_typing(sender_id)
+                send_message(sender_id, reply)
+                save_users(users)
 
         return "EVENT_RECEIVED", 200
 
