@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Bot is running ✅", 200
+    return "Bot is running ", 200
 
 # ================== SAFE FILE HANDLING ==================
 def load_users():
