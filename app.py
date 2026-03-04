@@ -55,7 +55,7 @@ def send_message(recipient_id, text):
 
 # ================== AI CLASSIFICATION ==================
 def analyze_message_ai(text):
-    prompt = f"""
+   # prompt = #f"""
 صنف الرسالة التالية إلى واحدة فقط من:
 normal
 ask_number
@@ -67,14 +67,14 @@ light_insult
 
 الرسالة:
 {text}
-"""
-    try:
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=prompt
-        )
-        return response.text.strip().lower()
-    except:
+#"""
+ #   try:
+  #      response = client.models.generate_content(
+        #    model="gemini-2.0-flash",
+    #        contents=prompt
+    #    )
+    #    return response.text.strip().lower()
+   # except:
         return "normal"
 
 # ================== VERIFY WEBHOOK ==================
