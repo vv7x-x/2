@@ -6,10 +6,10 @@ from flask import Flask, request
 from google import genai
 
 # ================== CONFIG ==================
-PAGE_ACCESS_TOKEN = os.getenv("PAGE_ACCESS_TOKEN")
-VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-PHONE_NUMBER = os.getenv("PHONE_NUMBER", "01228768422")
+PAGE_ACCESS_TOKEN = "EAATZBufLpmNMBQ3su57hX6kbd5n6DPa1tMSHT9G32aerZC6JhxFAnHkMy7D2D130jTaXFJBcZBSkDN8YjVenbwrEgUFH8RZAuasP4JJEi3Bsvv9AfV8Lu6prPJRJ1ij8KAduuxXTGrKDwU8sxZAZAE2ZBilic2ruRgXHHdmVH5a9j0PHQ3JtEgtNseSC1Tb9AZBVF92tmKOulYz4Bmr2uZCgMIbmspFTz6oLISzcODn8zdFYZD"
+VERIFY_TOKEN = "yahya2009"
+GEMINI_API_KEY = "AIzaSyBdX7PvaNf4oqLcqcQg6911iXcp68akMxM"
+PHONE_NUMBER =  "01228768422"
 
 DATA_FILE = "users.json"
 
