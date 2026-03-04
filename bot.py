@@ -34,7 +34,7 @@ def save_users(data):
 
 def send_typing(sender_id):
     requests.post(
-        f"https://graph.facebook.com/v19.0/me/messages",
+        f"https://graph.facebook.com/v25.0/me/messages",
         params={"access_token": PAGE_ACCESS_TOKEN},
         json={
             "recipient": {"id": sender_id},
