@@ -87,7 +87,7 @@ def webhook():
         data = request.json
         users = load_users()
 
-        if data.get("object") != "instagram":
+        if data.get("object") not in ["instagram", "page"]:
             return "ignored", 200
 
         for entry in data.get("entry", []):
