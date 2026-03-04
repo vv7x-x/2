@@ -17,7 +17,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Bot is running ", 200
+    return "OK", 200
+
 
 # ================== SAFE FILE HANDLING ==================
 def load_users():
@@ -36,6 +37,7 @@ def save_users(data):
     except:
         pass
 
+
 # ================== SEND FUNCTIONS ==================
 def send_typing(recipient_id):
     try:
@@ -47,13 +49,13 @@ def send_typing(recipient_id):
                 "sender_action": "typing_on"
             }
         )
-        time.sleep(1.2)
-    except:
-        pass
+        time.sleep(1)
+    except Exception as e:
+        print("Typing Error:", e)
 
 def send_message(recipient_id, text):
     try:
-        requests.post(
+        response = requests.post(
             "https://graph.facebook.com/v25.0/me/messages",
             params={"access_token": PAGE_ACCESS_TOKEN},
             json={
@@ -61,12 +63,15 @@ def send_message(recipient_id, text):
                 "message": {"text": text}
             }
         )
-    except:
-        pass
+        print("Send Response:", response.text)
+    except Exception as e:
+        print("Message Error:", e)
+
 
 # ================== AI CLASSIFICATION ==================
 def analyze_message_ai(text):
     return "normal"
+
 
 # ================== VERIFY WEBHOOK ==================
 @app.route("/webhook", methods=["GET"])
@@ -80,13 +85,17 @@ def verify():
 
     return "Verification failed", 403
 
+
 # ================== RECEIVE MESSAGES ==================
 @app.route("/webhook", methods=["POST"])
 def webhook():
     try:
         data = request.json
+        print("DATA RECEIVED:", data)
+
         users = load_users()
 
+        # ✅ إصلاح مشكلة object
         if data.get("object") not in ["instagram", "page"]:
             return "ignored", 200
 
@@ -126,8 +135,9 @@ def webhook():
         return "EVENT_RECEIVED", 200
 
     except Exception as e:
-        print("ERROR:", e)
+        print("WEBHOOK ERROR:", e)
         return "error", 200
+
 
 # ================== RUN ==================
 if __name__ == "__main__":
