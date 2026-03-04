@@ -16,7 +16,9 @@ DATA_FILE = "users.json"
 # ================== INIT ==================
 app = Flask(__name__)
 client = genai.Client(api_key=GEMINI_API_KEY)
-
+@app.route("/", methods=["GET"])
+def home():
+    return "Bot is running ✅", 200
 if not os.path.exists(DATA_FILE):
     with open(DATA_FILE, "w") as f:
         json.dump({}, f)
